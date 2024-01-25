@@ -1,5 +1,6 @@
 <script>
 import { defineComponent } from 'vue'
+import { cloneVNode } from '@/utils'
 import TableColumn from 'element-ui/lib/table-column'
 
 // 参考文章链接：https://juejin.cn/post/7138993619955908638
@@ -39,6 +40,7 @@ export default defineComponent({
   inheritAttrs: false,
   data() {
     return {
+      key: 0,
       columnsFromSlot: [], // 原始列的数据
       columnsFromStorage: [], // 更新列的数据
       columnsRender: [], // 渲染时完整列数据
@@ -50,6 +52,9 @@ export default defineComponent({
     }
   },
   watch: {
+    columnsRender() {
+      this.key += 1
+    },
     watchColumns() {
       // 当 columnsFromSlot 或 columnsFromStorage 有变更，重新生成 columns
       const slot = [...this.columnsFromSlot]
@@ -87,10 +92,6 @@ export default defineComponent({
       slots.other.push(vnode)
     })
 
-    // TODO: 这里解构了数组，留意下后面是否改回来
-    const children = [...slots.left, ...slots.main, ...slots.other]
-    // console.log('@@', children)
-
     const columnsFromSlot = slots.main.map(vnode => getColumnProps(vnode))
     const isSame = isSameColumns(this.columnsFromSlot, columnsFromSlot)
     if (!isSame) {
@@ -98,11 +99,44 @@ export default defineComponent({
       this.columnsFromSlot = columnsFromSlot
     }
 
+    // 对列进行筛选与排序
+    const refactorySlot = () => {
+      const { main } = slots
+      const columnsProp = main.map(vnode => getColumnProps(vnode).prop)
+
+      const refactorySlot = []
+      this.columnsRender.forEach(({prop, visiable, fixed}) => {
+        if (!visiable) return
+
+        let vnode = main.find((_, index) => prop === columnsProp[index])
+        if (!vnode) return
+
+        vnode = cloneVNode(vnode)
+        vnode.componentOptions = { ...vnode.componentOptions }
+        vnode.componentOptions.propsData = {
+          ...vnode.componentOptions.propsData,
+        }
+
+        const propsData = vnode.componentOptions.propsData
+
+        if (fixed !== undefined) propsData.fixed = fixed
+
+        refactorySlot.push(vnode)
+      })
+
+      return refactorySlot
+    }
+
+    // TODO: 这里解构了数组，留意下后面是否改回来
+    const children = [...slots.left, refactorySlot(), ...slots.other]
+    // console.log('@@', children)
+
     return h(
       'el-table',
       {
         attrs: {
           ...this.$attrs,
+          key: this.key,
         },
       },
       children
