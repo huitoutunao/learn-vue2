@@ -1001,6 +1001,11 @@ semver@^6.3.1:
   resolved "https://registry.npmmirror.com/semver/-/semver-6.3.1.tgz#556d2ef8689146e46dcea4bfdd095f3434dffcb4"
   integrity sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==
 
+sortablejs@1.10.2:
+  version "1.10.2"
+  resolved "https://registry.npmmirror.com/sortablejs/-/sortablejs-1.10.2.tgz#6e40364d913f98b85a14f6678f92b5c1221f5290"
+  integrity sha512-YkPGufevysvfwn5rfdlGyrGjt7/CRHwvRPogD/lC+TnvcN29jDpCifKP+rBqf+LRldfXSTh+0CGLcSg0VIxq3A==
+
 "source-map-js@>=0.6.2 <2.0.0", source-map-js@^1.0.2:
   version "1.0.2"
   resolved "https://registry.npmmirror.com/source-map-js/-/source-map-js-1.0.2.tgz#adbc361d9c62df380125e7f161f71c826f1e490c"
@@ -1105,6 +1110,13 @@ vue@^2.7.7:
   dependencies:
     "@vue/compiler-sfc" "2.7.16"
     csstype "^3.1.0"
+
+vuedraggable@^2.24.3:
+  version "2.24.3"
+  resolved "https://registry.npmmirror.com/vuedraggable/-/vuedraggable-2.24.3.tgz#43c93849b746a24ce503e123d5b259c701ba0d19"
+  integrity sha512-6/HDXi92GzB+Hcs9fC6PAAozK1RLt1ewPTLjK0anTYguXLAeySDmcnqE8IC0xa7shvSzRjQXq3/+dsZ7ETGF3g==
+  dependencies:
+    sortablejs "1.10.2"
 
 yallist@^3.0.2:
   version "3.1.1"
