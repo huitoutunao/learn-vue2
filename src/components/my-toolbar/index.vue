@@ -22,6 +22,16 @@
         </el-button>
       </div>
     </draggable>
+    <div class="form-box">
+      <el-form :inline="true" :model="form">
+        <el-form-item>
+          <el-input placeholder="请输入列名" v-model="form.addInput" clearable></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" icon="el-icon-plus" @click="onAdd">新增</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
   </div>
 </template>
 
@@ -41,6 +51,13 @@ export default defineComponent({
         return []
       },
     },
+  },
+  data() {
+    return {
+      form: {
+        addInput: '',
+      },
+    }
   },
   computed: {
     proxyColumns: {
@@ -79,13 +96,17 @@ export default defineComponent({
       nColumns.splice(index, 1, nOpts)
       this.proxyColumns = nColumns
     },
+
+    onAdd() {
+      const nColumns = [...this.proxyColumns]
+    },
   },
 })
 </script>
 
 <style lang="scss" scoped>
 .my-toolbar {
-  width: 300px;
+  min-width: 300px;
 
   .draggable {
     border: 1px solid #eee;
@@ -102,6 +123,10 @@ export default defineComponent({
     .el-checkbox {
       margin-right: 15px;
     }
+  }
+
+  .form-box {
+    padding-top: 15px;
   }
 }
 </style>
