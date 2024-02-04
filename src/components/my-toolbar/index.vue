@@ -65,6 +65,7 @@ export default defineComponent({
         return this.columns
       },
       set(v) {
+        console.log('##', v)
         this.$emit('update:columns', v)
       },
     },
@@ -98,7 +99,13 @@ export default defineComponent({
     },
 
     onAdd() {
+      // TODO: 这里是成功了，但是没有渲染到页面，推测 myTable 组件根据插槽重新计算列属性
+      const nOpts = {...(this.proxyColumns[0])}
       const nColumns = [...this.proxyColumns]
+      nOpts.label = this.form.addInput
+      nOpts.prop = 'myprop'
+      nColumns.push(nOpts)
+      this.proxyColumns = nColumns
     },
   },
 })
