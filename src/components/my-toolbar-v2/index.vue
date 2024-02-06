@@ -3,23 +3,8 @@
     <h4>动态列控制</h4>
     <draggable v-model="proxyColumns" class="draggable">
       <div v-for="(item, index) in proxyColumns" :key="item.prop" class="tool">
-        <el-checkbox :value="item.visiable" @change="toggleVisiable(item, index)">
-          {{ item.label }}
-        </el-checkbox>
-        <el-button
-          :type="item.fixed === 'left' ? 'primary' : 'default'"
-          size="mini"
-          @click="setFixed(item, index, 'left')"
-        >
-          左固定
-        </el-button>
-        <el-button
-          :type="item.fixed === 'right' ? 'primary' : 'default'"
-          size="mini"
-          @click="setFixed(item, index, 'right')"
-        >
-          右固定
-        </el-button>
+        <span class="span">{{ item.label }}</span>
+        <el-button size="mini" @click="handlePanel(index)">操作面板</el-button>
         <el-button type="danger" size="mini" @click="handleDel(index)">删除</el-button>
       </div>
     </draggable>
@@ -33,6 +18,7 @@
         </el-form-item>
       </el-form>
     </div>
+    <ActionPanel title="操作面板" :form-data="formData" :visible.sync="drawer" :direction="direction" @confirm="confirmPanel" @cancel="drawer = false" />
   </div>
 </template>
 
@@ -40,11 +26,13 @@
 import { defineComponent } from 'vue'
 import { nanoid } from 'nanoid'
 import draggable from 'vuedraggable'
+import ActionPanel from '../action-panel/index.vue'
 
 export default defineComponent({
   name: 'MyToolBarV2',
   components: {
     draggable,
+    ActionPanel,
   },
   props: {
     columns: {
@@ -59,6 +47,9 @@ export default defineComponent({
       form: {
         addInput: '',
       },
+      formData: {},
+      drawer: false,
+      direction: 'rtl',
     }
   },
   computed: {
@@ -86,35 +77,23 @@ export default defineComponent({
     },
   },
   methods: {
-    toggleVisiable(options, index) {
-      const nOpts = {...options}
+    handlePanel(index) {
+      let nOpts = {...this.proxyColumns[index]}
       const nColumns = [...this.proxyColumns]
-      nOpts.visiable = !nOpts.visiable
-      nColumns.splice(index, 1, nOpts)
-      this.proxyColumns = nColumns
+      this.formData = {...nOpts}
+      this.drawer = true
+      this.$once('confirmPanel', val => {
+        nOpts = {...nOpts, ...val}
+        nColumns.splice(index, 1, nOpts)
+        this.proxyColumns = nColumns
+      })
     },
-
-    setFixed(options, index, fixedVal) {
-      const nOpts = {...options}
-      const nColumns = [...this.proxyColumns]
-      const oldFixed = nOpts.fixed
-
-      if (oldFixed) {
-        if (oldFixed === fixedVal) {
-          nOpts.fixed = false
-        } else {
-          nOpts.fixed = oldFixed === 'left' ? 'right' : 'left'
-        }
-      } else {
-        nOpts.fixed = fixedVal
-      }
-
-      nColumns.splice(index, 1, nOpts)
-      this.proxyColumns = nColumns
+    confirmPanel(val) {
+      this.drawer = false
+      this.$emit('confirmPanel', val)
     },
 
     handleDel(index) {
-      const nOpts = {...this.proxyColumns[0]}
       const nColumns = [...this.proxyColumns]
       this.$confirm('确认删除吗?', '提示', {
         confirmButtonText: '确定',
@@ -138,7 +117,7 @@ export default defineComponent({
     },
 
     handleAdd() {
-      const nOpts = {...(this.proxyColumns[0])}
+      const nOpts = {...this.proxyColumns[0]}
       const nColumns = [...this.proxyColumns]
       nOpts.label = this.form.addInput
       nOpts.prop = nanoid()
@@ -168,6 +147,12 @@ export default defineComponent({
 
     .el-checkbox {
       margin-right: 15px;
+    }
+
+    .span {
+      display: inline-block;
+      margin-right: 15px;
+      font-size: 14px;
     }
   }
 
