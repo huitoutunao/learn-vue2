@@ -6,7 +6,7 @@
           <el-form-item label="列名称">
             <el-input v-model="form.label"></el-input>
           </el-form-item>
-          <el-form-item label="是否显示">
+          <el-form-item label="显示状态">
             <el-switch v-model="form.visiable"></el-switch>
           </el-form-item>
           <el-form-item label="固定列">
@@ -14,6 +14,16 @@
               <el-checkbox label="left">左固定</el-checkbox>
               <el-checkbox label="right">右固定</el-checkbox>
             </el-checkbox-group>
+          </el-form-item>
+          <el-form-item label="输入类型">
+            <el-select v-model="form.slotName" placeholder="请选择">
+              <el-option
+                v-for="item in slotNameOptions"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onConfirm">确认</el-button>
@@ -44,7 +54,23 @@ export default defineComponent({
         label: '',
         visiable: false,
         checkfixeds: [],
+        slotName: '',
       },
+
+      slotNameOptions: [
+        {
+          label: 'el-input',
+          value: 'el-input',
+        },
+        {
+          label: 'el-select',
+          value: 'el-select',
+        },
+        {
+          label: 'el-date-picker',
+          value: 'el-date-picker',
+        },
+      ],
     }
   },
   watch: {

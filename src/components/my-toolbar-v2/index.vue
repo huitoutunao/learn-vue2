@@ -118,11 +118,15 @@ export default defineComponent({
     },
 
     handleAdd() {
-      const nOpts = {...this.proxyColumns[0]}
       const nColumns = [...this.proxyColumns]
-      nOpts.label = this.form.addInput
-      nOpts.prop = nanoid(8)
-      nColumns.push(nOpts)
+      const defaultOption = {
+        label: this.form.addInput,
+        prop: nanoid(8),
+        visiable: true,
+        slotName: 'el-input',
+        'min-width': '180',
+      }
+      nColumns.push(defaultOption)
       this.proxyColumns = nColumns
       this.form.addInput = ''
     },
