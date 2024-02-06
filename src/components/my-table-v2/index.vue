@@ -4,7 +4,16 @@
       v-for="option in columnsRender"
       :key="option.prop"
       v-bind="option"
-    />
+    >
+      <template #default="{ row }">
+        <component
+          v-if="option.slotName"
+          :is="option.slotName"
+          v-model="row[option.prop]"
+        ></component>
+        <el-input v-else v-model="row[option.prop]"></el-input>
+      </template>
+    </el-table-column>
   </el-table>
 </template>
 
@@ -38,7 +47,6 @@ export default defineComponent({
     return {
       key: 0,
       columnsFromStorage: getStorage('columns') ?? [],
-      // columnsRender: [],
     }
   },
   computed: {
@@ -51,7 +59,7 @@ export default defineComponent({
         res = this.columns
       }
       return res
-    }
+    },
   },
   watch: {
     columnsRender() {
@@ -62,6 +70,22 @@ export default defineComponent({
       this.columnsFromStorage = nVal
       setStorage('columns', nVal)
     },
+  },
+  mounted() {
+    this.unwatch = this.$watch(
+      function () {
+        return this.$attrs.data
+      },
+      function (nVal) {
+        setStorage('tableData', nVal)
+      },
+      {
+        deep: true
+      }
+    )
+  },
+  beforeDestroy() {
+    this.unwatch()
   },
 })
 </script>

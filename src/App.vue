@@ -12,6 +12,14 @@ import MyTableV2 from './components/my-table-v2/index.vue'
 // import MyToolBar from './components/my-toolbar/index.vue'
 import MyToolBarV2 from './components/my-toolbar-v2/index.vue'
 
+const getStorage = (key) => {
+  try {
+    return JSON.parse(sessionStorage.getItem(key))
+  } catch (err) {
+    return
+  }
+}
+
 export default defineComponent({
   name: 'App',
   components: {
@@ -21,6 +29,16 @@ export default defineComponent({
     MyToolBarV2,
   },
   data() {
+    const tableData = getStorage('tableData') ?? [
+      {
+        title: '标题',
+        date: '2024-01-24',
+        name: '王小虎',
+        address: '上海市普陀区金沙江路 1518 弄',
+        order: '01',
+        total: '10',
+      },
+    ]
     return {
       columns: [
         {
@@ -54,38 +72,7 @@ export default defineComponent({
           'min-width': '180',
         },
       ],
-      tableData: [
-        {
-          date: '2024-01-24',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-          order: '111',
-          title: '111',
-          title2: '111',
-          title3: '111',
-          total: 10,
-        },
-        {
-          date: '2024-01-25',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-          order: '222',
-          title: '222',
-          title2: '222',
-          title3: '222',
-          total: 20,
-        },
-        {
-          date: '2024-01-26',
-          name: '王小虎',
-          address: '上海市普陀区金沙江路 1518 弄',
-          order: '333',
-          title: '333',
-          title2: '333',
-          title3: '333',
-          total: 30,
-        },
-      ],
+      tableData,
     }
   },
 })

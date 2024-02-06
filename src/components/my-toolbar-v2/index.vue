@@ -59,7 +59,8 @@ export default defineComponent({
           const opt = {...item}
           const properties = new Map([
             ['fixed', false],
-            ['visiable', true]
+            ['visiable', true],
+            ['slotName', 'el-input']
           ])
 
           for (let [key, val] of properties) {
@@ -120,7 +121,7 @@ export default defineComponent({
       const nOpts = {...this.proxyColumns[0]}
       const nColumns = [...this.proxyColumns]
       nOpts.label = this.form.addInput
-      nOpts.prop = nanoid()
+      nOpts.prop = nanoid(8)
       nColumns.push(nOpts)
       this.proxyColumns = nColumns
       this.form.addInput = ''
