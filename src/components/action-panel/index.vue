@@ -60,6 +60,7 @@ import { defineComponent } from 'vue'
 import { nanoid } from 'nanoid'
 import draggable from 'vuedraggable'
 
+// TODO: 选择 el-select 需要下面动态添加自定义选项名称
 export default defineComponent({
   name: 'ActionPanel',
   components: {
