@@ -28,6 +28,8 @@
 
 <script>
 import { defineComponent } from 'vue'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
 
 // 本地缓存相关
 const setStorage = (key, val) => {
@@ -43,6 +45,9 @@ const getStorage = (key) => {
 
 export default defineComponent({
   name: 'MyTableV2',
+  components: {
+    VueSlider,
+  },
   props: {
     columns: {
       type: Array,
@@ -99,4 +104,8 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-table td.el-table__cell .vue-slider {
+  box-sizing: content-box;
+}
+</style>
