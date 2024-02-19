@@ -10,7 +10,16 @@
           v-if="option.slotName"
           :is="option.slotName"
           v-model="row[option.prop]"
-        ></component>
+        >
+          <template v-if="option.slotName === 'el-select'">
+            <el-option
+              v-for="item in option.selectOptions"
+              :key="item.id"
+              :label="item.input"
+              :value="item.input"
+            ></el-option>
+          </template>
+        </component>
         <el-input v-else v-model="row[option.prop]"></el-input>
       </template>
     </el-table-column>

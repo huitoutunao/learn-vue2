@@ -18,7 +18,7 @@
         </el-form-item>
       </el-form>
     </div>
-    <ActionPanel title="操作面板" :form-data="formData" :visible.sync="drawer" :direction="direction" @confirm="confirmPanel" @cancel="drawer = false" />
+    <ActionPanel title="操作面板" :form-data="formData" :visible.sync="drawer" :direction="direction" size="45%" @confirm="confirmPanel" @cancel="drawer = false" />
   </div>
 </template>
 
