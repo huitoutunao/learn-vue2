@@ -1,21 +1,21 @@
 <template>
   <div class="page">
-    <p>我是父组件：{{ count }}</p>
+    <p>我是子组件：{{ count }}</p>
     <el-button type="primary" size="small" @click="onChange">点我+1</el-button>
-    <el-button type="primary" size="small" @click="onHide">点我隐藏子组件</el-button>
+    <el-button type="primary" size="small" @click="onHide">点我隐藏孙组件</el-button>
     <el-divider />
-    <Child v-if="show" />
+    <Son v-if="show" />
   </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue'
-import Child from '@/components/Child.vue'
+import Son from './Son.vue'
 
 export default defineComponent({
-  name: 'App',
+  name: 'ChildComp',
   components: {
-    Child,
+    Son,
   },
   data() {
     return {
@@ -24,28 +24,28 @@ export default defineComponent({
     }
   },
   beforeCreate() {
-    console.log('App beforeCreate')
+    console.log('Child beforeCreate')
   },
   created() {
-    console.log('App created')
+    console.log('Child created')
   },
   beforeMount() {
-    console.log('App beforeMount')
+    console.log('Child beforeMount')
   },
   mounted() {
-    console.log('App mounted')
+    console.log('Child mounted')
   },
   beforeUpdate() {
-    console.log('App beforeUpdate')
+    console.log('Child beforeUpdate')
   },
   updated() {
-    console.log('App updated')
+    console.log('Child updated')
   },
   beforeDestroy() {
-    console.log('App beforeDestroy')
+    console.log('Child beforeDestroy')
   },
   destroyed() {
-    console.log('App destroyed')
+    console.log('Child destroyed')
   },
   methods: {
     onChange() {
